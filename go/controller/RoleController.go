@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"go-admin/go/model"
+	"go-admin/go/entity"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"go-admin/go/service"
@@ -9,7 +9,7 @@ import (
 
 
 func CreateRole(c *gin.Context)  {
-	var user model.User
+	var user entity.User
 	c.BindJSON(&user)
 	err:=service.CreateUser(&user)
 	if err!=nil{
