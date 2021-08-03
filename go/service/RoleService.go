@@ -10,8 +10,8 @@ import (
 /**
 新建User信息
  */
-func CreateUser(user *entity.User)(err error)  {
-	if err = dao.SqlSession.Create(user).Error;err!=nil{
+func CreateRole(role *entity.Role)(err error)  {
+	if err = dao.SqlSession.Create(role).Error;err!=nil{
 		return err
 	}
 	return
@@ -20,8 +20,8 @@ func CreateUser(user *entity.User)(err error)  {
 /**
 获取user集合
  */
-func GetAllUser()(userList []*entity.User,err error)  {
-	if err:=dao.SqlSession.Find(&userList).Error;err!=nil{
+func GetAllRole()(roleList []*entity.Role,err error)  {
+	if err:=dao.SqlSession.Find(&roleList).Error;err!=nil{
 		return nil,err
 	}
 	return
@@ -30,16 +30,16 @@ func GetAllUser()(userList []*entity.User,err error)  {
 /**
 根据id删除user
  */
-func DeleteUserById(id string)(err error){
-	err = dao.SqlSession.Where("id=?",id).Delete(&entity.User{}).Error
+func DeleteRoleById(id string)(err error){
+	err = dao.SqlSession.Where("id=?",id).Delete(&entity.Role{}).Error
 	return
 }
 
 /**
 根据id查询用户User
  */
-func GetUserById(id string)(user *entity.User,err error)  {
-	if err = dao.SqlSession.Where("id=?",id).First(user).Error;err!=nil{
+func GetRoleById(id string)(role *entity.Role,err error)  {
+	if err = dao.SqlSession.Where("id=?",id).First(role).Error;err!=nil{
 		return nil,err
 	}
 	return
@@ -48,8 +48,8 @@ func GetUserById(id string)(user *entity.User,err error)  {
 /**
 更新用户信息
  */
-func UpdateUser(user * entity.User)(err error)  {
-	err = dao.SqlSession.Save(user).Error
+func UpdateRole(role * entity.Role)(err error)  {
+	err = dao.SqlSession.Save(role).Error
 	return
 }
 
