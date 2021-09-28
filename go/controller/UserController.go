@@ -3,8 +3,8 @@ package controller
 import (
 	"go-admin/go/entity"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"go-admin/go/service"
+	"go-admin/go/common/rsp"
 )
 
 
@@ -17,13 +17,9 @@ func CreateUser(c *gin.Context)  {
 	err:=service.CreateUser(&user)
 	//判断是否异常，无异常则返回包含200和更新数据的信息
 	if err!=nil{
-		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		rsp.Error(c,err.Error())
 	}else {
-		c.JSON(http.StatusOK,gin.H{
-			"code":200,
-			"msg":"success",
-			"data":user,
-		})
+		rsp.Success(c,"新增成功",user)
 	}
 }
 
@@ -31,31 +27,27 @@ func CreateUser(c *gin.Context)  {
 func GetUserList(c *gin.Context)  {
 	todoList,err :=service.GetAllUser()
 	if err!=nil{
-		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		rsp.Error(c,err.Error())
 	}else {
-		c.JSON(http.StatusOK,gin.H{
-			"code":200,
-			"msg":"success",
-			"data":todoList,
-		})
+		rsp.Success(c,"请求成功",todoList)
 	}
 }
 
 func UpdateUser(c *gin.Context)  {
 	id,ok:=c.Params.Get("id")
 	if !ok{
-		c.JSON(http.StatusBadRequest,gin.H{"error":"无效的id"})
+		rsp.Error(c,"无效的id")
 	}
 	user,err:= service.GetUserById(id)
 	if err!=nil{
-		c.JSON(http.StatusOK,gin.H{"error":err.Error()})
+		rsp.Error(c,err.Error())
 		return
 	}
 	c.BindJSON(&user)
 	if err= service.UpdateUser(user);err!=nil{
-		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		rsp.Error(c,err.Error())
 	}else {
-		c.JSON(http.StatusOK,user)
+		rsp.Success(c,"更新成功",user)
 	}
 }
 
@@ -64,11 +56,11 @@ func UpdateUser(c *gin.Context)  {
 func DeleteUserById(c *gin.Context)  {
 	id ,ok:=c.Params.Get("id")
 	if !ok{
-		c.JSON(http.StatusBadRequest,gin.H{"error":"无效的id"})
+		rsp.Error(c,"无效的id")
 	}
 	if err:= service.DeleteUserById(id);err!=nil{
-		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		rsp.Error(c,err.Error())
 	}else {
-		c.JSON(http.StatusOK,gin.H{id:"deleted"})
+		rsp.Success(c,"删除成功",id)
 	}
 }

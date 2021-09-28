@@ -41,24 +41,29 @@ func (c *conf) getConf() *conf {
 //初始化连接数据库，生成可操作基本增删改查结构的变量
 func InitMySql()(err error)  {
 	var c conf
-	//获取yaml配置参数
-	conf:=c.getConf()
-	//将yaml配置参数拼接成连接数据库的url
-    dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		conf.UserName,
-		conf.Password,
-		conf.Url,
-		conf.Port,
-		conf.DbName,
-	)
 	//连接数据库
-	SqlSession,err =gorm.Open(DRIVER,dsn)
+	SqlSession,err =gorm.Open(DRIVER,c.ConnectUrl())
 	if err !=nil{
 		panic(err)
 	}
 	//验证数据库连接是否成功，若成功，则无异常
 	return SqlSession.DB().Ping()
 }
+
+//数据库连接字符串
+func (c conf) ConnectUrl() string  {
+	//获取yaml配置参数
+	conf:=c.getConf()
+	//将yaml配置参数拼接成连接数据库的url
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		conf.UserName,
+		conf.Password,
+		conf.Url,
+		conf.Port,
+		conf.DbName,
+	)
+}
+
 
 //关闭数据库连接
 func Close()  {
